@@ -1,61 +1,51 @@
-
 import java.util.Scanner;
+import java.util.Random;
 
-class numberGame{
+class numberGame {
 
-    public static int guess_number() {
-        int user_input;
-        int i = 1;
-        int count = 0;
+    // Method to play one round
+    public static int guessNumber(Scanner sc) {
+        Random random = new Random();
+        int num = random.nextInt(100) + 1; 
+        int attempts = 10;
 
-        double random = Math.random() * 100;
-        int num = (int) random;
-        System.out.println(num);
+        System.out.println("\nGuess the number between 1 and 100");
+        System.out.println("You have only " + attempts + " guesses");
 
-        System.out.println("Guess the number----");
-        System.out.println("You have only 10 guesses");
-        
-        try( Scanner sc = new Scanner(System.in)){
-        while (i <= 10) {
-            user_input = sc.nextInt();
-            if (user_input == num) {
-                count++;
-                System.out.println("you have sccessfully guess the number in " + count + " times");
-                break;
-            } else if (user_input > num) {
-                System.out.println("try lower number");
-                count++;
-                i++;
-            } else {
-                System.out.println("try higher number");
-                count++;
-                i++;
+        for (int i = 1; i <= attempts; i++) {
+            System.out.print("Attempt " + i + ": ");
+            int userInput = sc.nextInt();
+
+            if (userInput == num) {
+                System.out.println("Correct! You guessed the number in " + i + " attempts.");
+                return 1;
+            } 
+            else if (userInput > num) {
+                System.out.println("Try a lower number.");
+            } 
+            else {
+                System.out.println("Try a higher number.");
             }
-            
-            
         }
-    
-        if (i <= 10) {
-            System.out.println("you sucessfully won");
-            return 1;
-        } else {
-            System.out.println("you loose");
-            return 0;
-        }
+
+        System.out.println("You lost! The correct number was: " + num);
+        return 0;
     }
 
-    }
-
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int decision, score = 0;
+        int score = 0;
+        int decision;
+
         do {
-            score += guess_number();
-            System.out.println("Do you want to play again!--->  then press 1 otherwise 0");
+            score += guessNumber(sc);
+
+            System.out.print("\nDo you want to play again? (1 = Yes, 0 = No): ");
             decision = sc.nextInt();
-            
-            sc.close();
+
         } while (decision == 1);
-        System.out.println("score = " + score);
+
+        System.out.println("\nFinal Score = " + score);
+        sc.close();
     }
 }
